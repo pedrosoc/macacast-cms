@@ -49,6 +49,13 @@
                     <input v-else class="input" type="text" placeholder="e.g. Podcasts" v-model="selectedContent.name">
                   </div>
                 </div>
+                <div class="field">
+                  <label class="label">Rota no website</label>
+                  <div class="control">
+                    <input v-if="!selectedContent" class="input" type="text" placeholder="e.g. /podcasts" v-model="baseRoute">
+                    <input v-else class="input" type="text" placeholder="e.g. Podcasts" v-model="selectedContent.baseRoute">
+                  </div>
+                </div>
                 <!-- area to add new field (variables) to the Content -->
                 <div class="field">
                   <!-- <button type="submit" class="button is-info"  @click="callModal('add')">Adicionar novo campo</button> -->
@@ -122,6 +129,7 @@
             </div>
             <div class="buttons">
               <button v-if="selectedContent" type="submit" class="button is-info" :disabled="!selectedContent.name || !checkedFields.length" @click="createMenuItem(true)">Editar</button>
+              <button v-if="selectedContent" type="submit" class="button is-danger" :disabled="!selectedContent.name || !checkedFields.length" @click="cancelEdit()">Cancelar edição</button>
               <button v-else type="submit" class="button is-info" :disabled="!name || !checkedFields.length" @click="createMenuItem(false)">Criar novo</button>
             </div>
           </div>
@@ -320,6 +328,7 @@ export default {
         name: this.name,
         contentFields: this.contentFields,
         slug: this.slug,
+        baseRoute: this.baseRoute,
         path: `/admin/content/${path}`,
         icon: 'fa-file-text',
         fields: selectedFields
@@ -348,7 +357,12 @@ export default {
         .then(() => {
           this.loadContentTypes()
           this.showNotification('success', 'Tipo de conteúdo removido com sucesso.')
+          this.resetForm()
         })
+    },
+    cancelEdit () {
+      this.loadContentTypes()
+      this.resetForm()
     },
     resetForm () {
       this.name = ''
@@ -356,6 +370,7 @@ export default {
         textArea: []
       }
       this.slug = ''
+      this.baseRoute = ''
       this.selectedContent = null
       for (var fieldKey in this.fields) {
         this.fields[fieldKey].checked = false
