@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="buttons">
-        <button type="submit" class="button is-success" :disabled="field.name === '' || field.type === ''" @click="edit()">Edit field</button>
+        <button type="submit" class="button is-info" :disabled="field.name === '' || field.type === ''" @click="edit()">Edit field</button>
         <router-link to="/admin/content" class="button is-danger">Cancel</router-link>
       </div>
     </div>

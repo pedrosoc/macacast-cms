@@ -26,7 +26,7 @@
         </span>
         <span class="navbar-item sign-out is-hidden-touch" @click="signOut">
           <span class="icon is-medium has-text-centered">
-            <i class="fa fa-bars fa-2x"></i>
+            <i class="fa fa-sign-out fa-lg"></i>
           </span>
         </span>
         <!-- mobile navigation -->
@@ -53,7 +53,7 @@ export default {
       mobileMenuIsActive: false,
       currentUser: firebase.auth().currentUser,
       showModal: false,
-      header: 'Are you sure you want to logout?',
+      header: 'Você tem certeza que deseja sair?',
       kind: 'logout',
       baseUrl: process.env.BASE_URL,
       menu: [
@@ -61,18 +61,18 @@ export default {
           name: 'Content',
           path: '/admin/content'
         },
-        {
+        /*{
           name: 'Routing',
           path: '/admin/routing'
-        },
+        },*/
         {
           name: 'Media',
           path: '/admin/media'
         },
-        {
+        /*{
           name: 'Database',
           path: '/admin/database'
-        },
+        },*/
         {
           name: 'Settings',
           path: '/admin/settings'
@@ -108,9 +108,12 @@ export default {
 
 <style lang="scss">
 $navbarBg: #fff;
-$navbarColor: #aaaaaa;
+$navbarColor: #444;
 
 #navbar {
+  display: flex;
+  align-items: center;
+
   z-index: 1024;
   background-color: $navbarBg;
 
@@ -125,9 +128,6 @@ $navbarColor: #aaaaaa;
     color: $navbarColor;
     font-weight: bold;
     max-height: 100px;
-    &:hover {
-      color: #4bb885;
-    }
     img {
       max-height: 3rem;
       margin-left: 1.2rem;

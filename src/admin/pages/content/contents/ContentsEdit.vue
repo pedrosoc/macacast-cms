@@ -52,7 +52,7 @@
           <div class="control">
             <input type="text" class="input" :placeholder="field.name" @blur="styleOptions(field.name)" @keyup.enter="styleOptions(field.name)" v-model="selectOptionsRow" maxlength="25">
           </div>
-          <p>Separate options with commas</p>
+          <p>Separa as opções por vírgula (Ex: "Suco,Maça,Pêra")</p>
         </div>
 
         <!-- Integer fields -->
@@ -92,7 +92,7 @@
           <label class="label">{{ field.name }}</label>
           <div class="columns">
             <div class="column is-two-fifths">
-              <span>Name</span>
+              <span>Nome</span>
               <input :placeholder="field.name + ' name'" class="input" v-model="content[field.name].name">
             </div>
             <div class="column is-two-fifths">
@@ -102,7 +102,7 @@
           </div>
           <div class="columns">
             <div class="column">
-              <span>Preview: </span>
+              <span>Visualização: </span>
               <a :href="content[field.name].link">{{ content[field.name].name }}</a>
             </div>
           </div>
@@ -123,7 +123,7 @@
               </span>
               <input :placeholder="field.name" @blur="styleTags(field.name)" @keyup.enter="styleTags(field.name)" type="text" class="input" maxlength="25" v-model="inputData">
             </div>
-            <p>Separate tags with commas</p>
+            <p>Separa as opções por vírgula (Ex: "Suco,Maça,Pêra")</p>
           </div>
         </div>
 
@@ -140,7 +140,7 @@
                     <i class="fa fa-upload"></i>
                   </span>
                   <span class="file-label">
-                    Choose a file…
+                    Escolha uma imagem
                   </span>
                 </span>
               </label>
@@ -156,9 +156,9 @@
     </div>
 
     <!-- the form buttons -->
-    <button v-if="content.state === 'saved'" type="submit" class="button is-success" @click="update(true)">Update and publish</button>
-    <button type="submit" class="button is-info" @click="update(false)">Update</button>
-    <router-link :to="'/admin/content/' + $route.params.key" class="button is-danger">Cancel</router-link>
+    <button v-if="content.state === 'saved'" type="submit" class="button is-info simple-button-margin" @click="update(true)">Atualizar e publicar</button>
+    <button type="submit" class="button is-info simple-button-margin" @click="update(false)">Atualizar</button>
+    <router-link :to="'/admin/content/' + $route.params.key" class="button is-danger">Cancelar</router-link>
   </div>
 </template>
 
@@ -281,5 +281,9 @@ export default {
 }
 .pointer {
   cursor: pointer;
+}
+
+.simple-button-margin {
+  margin-right: 20px;
 }
 </style>

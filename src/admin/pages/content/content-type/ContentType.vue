@@ -11,68 +11,95 @@
           <button class="delete" @click="hideNotifications"></button>{{notification.message}}
         </div>
       </transition>
-      <div class="columns">
-        <div class="column is-two-thirds">
-          <h2>Create content type</h2>
+      <div class="">
+          <div class="column">
+            <h2>Edite uma seção de conteúdo</h2>
+            <div class="box" v-if="contentsLoaded">
+                <div class="dropdown" :class="{'is-active': dropdownActive}" @click="toggleDropdown">
+                <div class="dropdown-trigger">
+                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" style="min-width: 200px !important;">
+                    <span>{{selectedContentType.label}}</span>
+                    <span class="icon is-small">
+                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                    <a class="dropdown-item" v-if="option" v-for="(option, optionKey) in createdContentTypes" :key="optionKey" @click="selectContentType(option)">
+                        {{option.label ? option.label : null }}
+                    </a>
+                    </div>
+                </div>
+                </div>
+                <button v-if="selectedContent" type="submit" class="button is-danger" @click="deleteMenuItem()">Deletar</button>
+            </div>
+            </div>
+        </div>
+        <div class="column">
+          <h2 v-if="selectedContent">Editando seção</h2>
+          <h2 v-else>Criar nova seção de conteúdo</h2>
           <div class="box">
             <div class="columns">
               <div class="column">
                 <div class="field">
-                  <label class="label">Content type name</label>
+                  <label class="label">Nome da seção</label>
                   <div class="control">
-                    <input v-if="!selectedContent" class="input" type="text" placeholder="e.g. Movies" v-model="name">
-                    <input v-else class="input" type="text" placeholder="e.g. Movies" v-model="selectedContent.name">
+                    <input v-if="!selectedContent" class="input" type="text" placeholder="e.g. Podcasts" v-model="name">
+                    <input v-else class="input" type="text" placeholder="e.g. Podcasts" v-model="selectedContent.name">
                   </div>
                 </div>
                 <!-- area to add new field (variables) to the Content -->
                 <div class="field">
-                  <button type="submit" class="button is-info"  @click="callModal('add')">Add new field</button>
+                  <!-- <button type="submit" class="button is-info"  @click="callModal('add')">Adicionar novo campo</button> -->
                   <!-- Modal -->
-                  <modal class="modal" @close="showModal.add = false"  @addContentField='addNewContentField($event)' v-if="showModal.add" :kind="'addContentField'" :header="'Add content field'">
+                  <modal class="modal" @close="showModal.add = false"  @addContentField='addNewContentField($event)' v-if="showModal.add" :kind="'addContentField'" :header="'Adicionar campo de conteúdo'">
                     <!-- Modal Slot - made for adding content type fields -->
                     <option v-for="field in fieldTypes" :key="field.id">{{ field.label }}</option>
                   </modal>
                 </div>
+                <br />
 
                 <!-- Custom Fields -->
-                <label class="label">Fields</label>
-                <label class="has-text-danger is-size-7" v-if="fields.length">Select the fields you want to be shown in content lists</label>
+                <label class="label">Campos selecionados</label>
+                <label class="is-size-7" v-if="!checkedFields.length">-</label>
                 <div class="field is-grouped is-grouped-multiline">
                   <ul class="nav-preview">
                     <li v-for="(field, fieldKey) in checkedFields" :key="fieldKey" v-if="field.checked">
                       {{ field.name }}
                       <span>
-                        <span v-if="fieldKey !== 0" class="has-text-success fa fa-arrow-up" @click="moveFieldUp(field, checkedFields[fieldKey - 1])"></span>
+                        <span v-if="fieldKey !== 0" class="fa fa-arrow-up" @click="moveFieldUp(field, checkedFields[fieldKey - 1])"></span>
                         <span v-if="fieldKey !== checkedFields.length - 1" class="fa fa-arrow-down" @click="moveFieldDown(field, checkedFields[fieldKey + 1])"></span>
                         <!-- <span @mouseover="showDesc = !showDesc">
                           <checkbox v-if="field.type === 'textbox'" v-model="field.sortable" /> </span>
-                        <span v-if="showDesc && field.type === 'textbox'" class="has-text-danger is-size-7">Check if you want this field to be shown in the table</span> -->
-                        <span><checkbox v-if="(field.type  !== 'textarea') && field.listable" v-model="field.listable" /></span>
+                        <span v-if="showDesc && field.type === 'textbox'" class="has-text-danger is-size-7">Check if you want this field to be shown in the table</span> 
+                        <span><checkbox v-if="(field.type  !== 'textarea') && field.listable" v-model="field.listable" /></span>-->
                       </span>
                     </li>
                   </ul>
                 </div>
-                <br /><br />
+                <br />
 
-                <div>
+                <!-- <div>
                   <label class="label">Slug - <strong v-text="slug"></strong></label>
 
                   <div class="select">
-                    <select v-model="slug" placeholder="Select Column For Slug">
-                      <option value="" selected>Select Column For Slug</option>
+                    <select v-model="slug" placeholder="Selecione um campo para Slug">
+                      <option value="" selected>Selecione um campo para Slug</option>
                       <option v-for="(field, fieldKey) in checkedFields" :key="fieldKey" v-if="field.checked && field.type === 'textbox'">
                         {{ field.name }}
                       </option>
                     </select>
                   </div>
 
-                  <br /><br />
-                  <p>This will be used with :key to identify record.</p>
+                  <br />
+                  <p>Esse campo será utilizado como identificador único.</p>
                 </div>
+                -->
               </div>
               <div class="column">
-                <label class="label">Available fields</label>
-                <label class="label has-text-danger is-size-7" v-if="fields.length">Select the fields you want to include in your content type</label>
+                <label class="label">Campos disponíveis</label>
+                <label class="label is-size-7" v-if="fields.length">Selecione os campos que você gostaria de incluir neste conteúdo</label>
                 <div class="field is-grouped is-grouped-multiline">
                   <ul class="nav-preview">
                     <li class="control" v-for="(field, fieldKey) in fields" :key="fieldKey">
@@ -90,39 +117,15 @@
                   </ul>
                 </div>
                 <br>
-                <router-link to="/admin/content/fieldNew" class="button is-info is-small">Add new field</router-link>
+                <router-link to="/admin/content/fieldNew" class="button is-info">Adicionar novo campo</router-link>
               </div>
             </div>
             <div class="buttons">
-              <button v-if="selectedContent" type="submit" class="button is-success" :disabled="!selectedContent.name || !checkedFields.length" @click="createMenuItem(true)">Edit</button>
-              <button v-else type="submit" class="button is-success" :disabled="!name || !checkedFields.length" @click="createMenuItem(false)">Create new</button>
+              <button v-if="selectedContent" type="submit" class="button is-info" :disabled="!selectedContent.name || !checkedFields.length" @click="createMenuItem(true)">Editar</button>
+              <button v-else type="submit" class="button is-info" :disabled="!name || !checkedFields.length" @click="createMenuItem(false)">Criar novo</button>
             </div>
           </div>
         </div>
-        <div class="column">
-          <h2>Edit content type</h2>
-          <div class="box" v-if="contentsLoaded">
-            <div class="dropdown" :class="{'is-active': dropdownActive}" @click="toggleDropdown">
-              <div class="dropdown-trigger">
-                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" style="min-width: 200px !important;">
-                  <span>{{selectedContentType.label}}</span>
-                  <span class="icon is-small">
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                  </span>
-                </button>
-              </div>
-              <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                <div class="dropdown-content">
-                  <a class="dropdown-item" v-if="option" v-for="(option, optionKey) in createdContentTypes" :key="optionKey" @click="selectContentType(option)">
-                    {{option.label ? option.label : null }}
-                  </a>
-                </div>
-              </div>
-            </div>
-            <button v-if="selectedContent" type="submit" class="button is-danger" @click="deleteMenuItem()">Delete</button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -198,7 +201,7 @@ export default {
       createdContentTypes: null,
       selectedContentType: {
         id: '',
-        label: 'Select content type'
+        label: 'Selecione um tipo de conteúdo'
       },
       dropdownActive: false,
       selectedContent: null,
@@ -285,7 +288,7 @@ export default {
       this.contentsLoaded = false
       this.selectedContentType = {
         id: '',
-        label: 'Select content type'
+        label: 'Selecione um tipo de conteúdo'
       }
       this.createdContentTypes = this.contents.map(content => {
         return {
@@ -293,7 +296,7 @@ export default {
           label: content.name
         }
       })
-      this.createdContentTypes.push({ id: '', label: 'Select content type' })
+      this.createdContentTypes.push({ id: '', label: 'Selecione um tipo de conteúdo' })
       this.contentsLoaded = true
     },
     createMenuItem (edit) {
@@ -330,12 +333,12 @@ export default {
         this.$firebaseRefs.contents.child(this.selectedContent['.key']).set(item).then(() => {
           this.resetForm()
           this.loadContentTypes()
-          this.showNotification('success', 'Content edited successfully')
+          this.showNotification('success', 'Conteúdo editado com sucesso.')
         })
       } else {
         this.$firebaseRefs.contents.push(item).then(() => {
           this.loadContentTypes()
-          this.showNotification('success', 'Content type added successfully')
+          this.showNotification('success', 'Tipo de conteúdo adicionado com sucesso.')
           this.resetForm()
         })
       }
@@ -344,7 +347,7 @@ export default {
       this.$firebaseRefs.contents.child(this.selectedContent['.key']).remove()
         .then(() => {
           this.loadContentTypes()
-          this.showNotification('success', 'Content type removed successfully')
+          this.showNotification('success', 'Tipo de conteúdo removido com sucesso.')
         })
     },
     resetForm () {
@@ -363,18 +366,18 @@ export default {
     },
     addField (field) {
       this.$firebaseRefs.fields.push(field).then(() => {
-        this.showNotification('success', 'Field added successfully')
+        this.showNotification('success', 'Campo adicionado com sucesso.')
       })
     },
     editField (field, f) {
       this.$firebaseRefs.fields.child(field['.key']).set(f).then(() => {
-        this.showNotification('success', 'Field edited successfully')
+        this.showNotification('success', 'Campo editado com sucesso.')
       })
     },
     removeField (field) {
       this.$firebaseRefs.fields.child(field['.key']).remove()
         .then(() => {
-          this.showNotification('success', 'Field removed successfully')
+          this.showNotification('success', 'Campo removido com sucesso.')
         })
       this.showModal.del = false
     },

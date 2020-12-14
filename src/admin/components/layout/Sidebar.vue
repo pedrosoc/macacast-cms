@@ -23,14 +23,6 @@
           </router-link>
         </ul>
       </router-link>
-      <a target="_blank" :href="helpbtn.path" class="menu-item">
-
-        <div class="icon is-medium">
-          <i :class="['fa', helpbtn.icon]"></i>
-        </div>
-
-        <div>{{ helpbtn.name }}</div>
-      </a>
 
     </ul>
   </div>
@@ -49,41 +41,41 @@ export default {
       loaded: true,
       menu: [
         {
-          name: 'Content',
+          name: 'Conteúdo',
           path: '/admin/content',
           icon: 'fa-wrench',
           dropdown: [
             {
-              name: 'New/Edit content',
+              name: 'Adicionar/editar seções',
               path: '/admin/content',
               icon: 'fa-file-text',
               supports: null
             }
           ]
         },
-        {
-          name: 'Routing',
+        /*{
+          name: 'Rotas',
           path: '/admin/routing',
           icon: 'fa-random'
-        },
+        },*/
         {
-          name: 'Media',
+          name: 'Imagens',
           path: '/admin/media',
           icon: 'fa-picture-o'
         },
-        {
+        /*{
           name: 'Database',
           path: '/admin/database',
           icon: 'fa-database'
-        },
+        },*/
         {
-          name: 'Settings',
+          name: 'Configurações',
           path: '/admin/settings',
           icon: 'fa-gear'
         }
       ],
       helpbtn: {
-        name: 'Help',
+        name: 'Ajuda',
         path: 'https://github.com/tamiat/tamiat/blob/master/README.md',
         icon: 'fa-question'
       }
@@ -94,11 +86,13 @@ export default {
 </script>
 
 <style lang="scss">
-$sidebarBg: #4cb986;
-$sidebarColor: #3b9169;
+$sidebarBg: #2b2b2b;
+$sidebarColor: #ffffff;
 $sidebarWidth: 115px;
+$sidebarHeight: 93.5vh;
 
 #sidebar {
+  height: $sidebarHeight;
   width: $sidebarWidth;
   min-width: 45px;
   z-index: 1024 - 1;
@@ -114,7 +108,7 @@ $sidebarWidth: 115px;
   a {
     display: block;
     text-align: center;
-    border-bottom: 1px solid #3b9169;
+    border-bottom: 1px solid #666666;
     padding-bottom: 4px;
     color: $sidebarColor;
     padding: 15px 0px;
@@ -143,6 +137,7 @@ $sidebarWidth: 115px;
     left: $sidebarWidth;
     top: 0px;
     z-index: 1023;
+    width: 200px;
 
     & li {
       padding: 15px;

@@ -1,46 +1,46 @@
 <template>
   <div class="nav-builder">
     <!-- navigation menu builder -->
-    <h3 class="is-size-3">Navigation Menu Builder</h3>
+    <h3 class="is-size-3">Criador de menu de navegação</h3>
     <div class="box">
       <div class="columns">
 
         <!-- link form -->
         <div class="column">
           <div class="field">
-            <label class="label">Name</label>
+            <label class="label">Nome</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Name (ex: Posts)" v-model="name">
+              <input class="input" type="text" placeholder="Nome (ex: Posts)" v-model="name">
             </div>
           </div>
           <div class="field">
-            <label class="label">Path</label>
+            <label class="label">Caminho</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Path (ex: /admin/posts)" v-model="path">
+              <input class="input" type="text" placeholder="Caminho (ex: /admin/posts)" v-model="path">
             </div>
           </div>
           <div class="field is-grouped">
             <div class="control">
-              <button v-if="action === 'new'" class="button is-info" @click="addLink">Add</button>
+              <button v-if="action === 'new'" class="button is-info" @click="addLink">Adicionar</button>
               <button v-if="action === 'edit'" class="button is-info" @click="updateLink">
-                Update
+                Atualizar
               </button>
               <button v-if="action === 'new-sub'" class="button is-info" @click="appendSubLink">
-                Add sub-link
+                Adicionar sub-link
               </button>
               <button v-if="action === 'edit-sub'" class="button is-info" @click="updateSubLink">
-                Edit sub-link
+                Editar sub-link
               </button>
             </div>
             <div class="control">
-              <button class="button" @click="clear">Cancel</button>
+              <button class="button" @click="clear">Cancelar</button>
             </div>
           </div>
         </div>
 
         <!-- menu visualization -->
         <div class="column">
-          <p class="is-size-4">menu</p>
+          <p class="is-size-4">Menu</p>
           <ul v-for="(item, index) in menu" :key="index" class="nav-preview">
             <li>
               {{item.name}}: {{item.path}}

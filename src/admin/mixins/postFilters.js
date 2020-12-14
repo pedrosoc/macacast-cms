@@ -15,15 +15,15 @@ const postFilters = {
       bulkActions: [
         {
           id: 'all',
-          label: 'Select all'
+          label: 'Selecionar todos'
         },
         {
           id: 'none',
-          label: 'Select none'
+          label: 'Desselecionar todos'
         },
         {
           id: 'delete',
-          label: 'Bulk delete'
+          label: 'Deletar todos selecionados'
         }
       ],
       selectedOption: '',
@@ -36,7 +36,7 @@ const postFilters = {
         },
         bulkAction: {
           id: '',
-          label: 'Bulk Actions'
+          label: 'Ações em massa'
         }
       }
     }

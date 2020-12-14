@@ -259,9 +259,9 @@
     </div>
 
     <!-- the form buttons -->
-    <button type="submit" class="button is-success" @click="add('published')">Publish</button>
-    <button type="submit" class="button is-info" @click="add('saved')">Save Draft</button>
-    <router-link :to="'/admin/content/' + $route.params.key" class="button is-danger">Cancel</router-link>
+    <button type="submit" class="button is-info simple-button-margin" @click="add('published')">Salvar e publicar</button>
+    <button type="submit" class="button is-info simple-button-margin" @click="add('saved')">Salvar como Rascunho</button>
+    <router-link :to="'/admin/content/' + $route.params.key" class="button is-danger">Cancelar</router-link>
   </div>
 </template>
 
@@ -421,5 +421,8 @@ export default {
 }
 .margin-select {
   margin-bottom: 25px;
+}
+.simple-button-margin {
+  margin-right: 20px;
 }
 </style>

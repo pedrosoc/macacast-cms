@@ -12,7 +12,7 @@
       <modal @close="showModal = false" :kind="kind" @addSetting='confirmAddSetting' @confirmDeleteSetting="confirmDeleteSetting()" v-if="showModal" :header="header" />
     </transition>
 
-    <h2>General settings</h2>
+    <h2>Configurações gerais</h2>
     <div class="box">
       <div class="columns">
 
@@ -20,7 +20,7 @@
           <div class="field columns">
             <div class="control column is-two-thirds">
               <div class="field">
-                <label class="label">Website logo</label>
+                <label class="label">Logo do Website</label>
                 <div class="control">
                   <img :src="websiteLogo">
                   <div class="file">
@@ -31,7 +31,7 @@
                           <i class="fa fa-upload"></i>
                         </span>
                         <span class="file-label">
-                          Choose a file…
+                          Selecione um arquivo…
                         </span>
                       </span>
                     </label>
@@ -64,12 +64,12 @@
             <div class="level-right">
               <div class="level-item">
                 <button type="button" class="button is-pulled-right" @click="addSettingField">
-                  Add Settings field
+                  Adicione um campo de configuração
                 </button>
               </div>
               <div class="level-item">
                 <button type="button" class="button is-info is-pulled-right" @click="saveSettings">
-                  Save Settings
+                  Salvar configuração
                 </button>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default {
     saveSettings () {
       delete this.settings['.key'] // This is a bit weird but no problem
       this.$firebaseRefs.settings.update(this.settings).then(() => {
-        this.showNotification('success', 'Settings Successfully saved')
+        this.showNotification('success', 'Configurações salvas com sucesso.')
       })
     },
     // display the loaded settings
@@ -144,31 +144,31 @@ export default {
       }
     },
     addSettingField () {
-      this.header = 'Name for a new setting: '
+      this.header = 'Nome para a nova configuração: '
       this.kind = 'addSetting'
       this.showModal = true
     },
     confirmAddSetting (value) {
       if (value === '') {
-        this.showNotification('danger', 'Please input the name of the setting first')
+        this.showNotification('danger', 'Por favor, primeiro inclua um nome para essa configuração.')
         return
       }
       if (this.settings.hasOwnProperty(value)) {
-        this.showNotification('danger', 'This setting already exist')
+        this.showNotification('danger', 'Essa configuração já existe.')
         return
       }
 
       this.$firebaseRefs.settings.update({
         [value]: ''
       }).then(() => {
-        this.showNotification('success', 'Setting Successfully added')
+        this.showNotification('success', 'Configuração adicionada com sucesso.')
         this.showModal = false
       }).catch(() => {
         this.showNotification('error', 'Setting not added')
       })
     },
     deleteSettingsField (key) {
-      this.header = 'Are you sure you want to delete this setting?'
+      this.header = 'Você tem certeza que deseja deletar essa configuração?'
       this.kind = 'deleteSetting'
       this.showModal = true
       this.deleteKey = key
@@ -178,13 +178,13 @@ export default {
         .child(this.deleteKey)
         .remove()
         .then(() => {
-          this.showNotification('success', 'Setting successfully removed')
+          this.showNotification('success', 'Configuração removida com sucesso.')
           this.showModal = false
           this.deleteKey = ''
           this.kind = ''
         })
         .catch((e) => {
-          this.showNotification('error', 'Setting not removed')
+          this.showNotification('error', 'Configuração não removida.')
         })
     },
     uploadWebsiteLogo (e) {
@@ -223,7 +223,7 @@ export default {
           // delete tempLogo[key]
             this.$firebaseRefs.media.child(currentLogo['.key']).set(logo)
               .then(() => {
-                this.showNotification('success', 'Logo uploaded successfully')
+                this.showNotification('success', 'Upload do Logo realizado com sucesso.')
               })
           } else {
             this.$firebaseRefs.media.push({
@@ -231,7 +231,7 @@ export default {
               path: snapshot.ref.fullPath,
               name: 'WebsiteLogo'
             }).then(() => {
-              this.showNotification('success', 'Logo uploaded successfully')
+              this.showNotification('success', 'Upload do Logo realizado com sucesso.')
             })
           }
         })

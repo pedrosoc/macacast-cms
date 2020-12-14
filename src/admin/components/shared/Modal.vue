@@ -12,32 +12,32 @@
         <input type="text" class="input" v-if="kind == 'addSetting'" :placeholder="'Setting'" v-model="settingName">
         <div v-if="kind == 'addContentField'">
           <div class="field">
-            <label class="label">Name of the content field</label>
+            <label class="label">Nome do campo de conteúdo</label>
             <input type="text" class="input" :placeholder="'Name'" v-model="contentFieldName">
           </div>
-          <label class="label">Type of the content field</label>
+          <label class="label">Tipo do campo de conteúdo</label>
           <div class="select">
             <select v-model="contentFieldType">
               <!-- Modal Slot - made for adding content type fields -->
               <slot>
-                <option>There are no options</option>
+                <option>Não existem opções</option>
               </slot>
             </select>
           </div>
         </div>
       </section>
       <footer class="modal-card-foot" v-if="kind == 'logout'">
-        <button class="button is-success" @click="$emit('confirmLogout')">Logout</button>
-        <button class="button" @click="$emit('close')">Cancel</button>
+        <button class="button is-info" @click="$emit('confirmLogout')">Sair</button>
+        <button class="button" @click="$emit('close')">Cancelar</button>
       </footer>
       <footer class="modal-card-foot" v-else>
         <template v-if="kind == 'deletePage' || kind == 'deleteField' || kind == 'deleteSetting' || kind == 'deleteContent' || kind == 'bulkDeleteSelected'">
-          <button class="button is-success" @click="deleteObj()">Confirm</button>
+          <button class="button is-info" @click="deleteObj()">Confirmar</button>
         </template>
         <template v-else>
-          <button class="button is-success" @click="add()">Add</button>
+          <button class="button is-info" @click="add()">Adicionar</button>
         </template>
-        <button class="button" @click="$emit('close')">Cancel</button>
+        <button class="button" @click="$emit('close')">Cancelar</button>
       </footer>
     </div>
   </div>

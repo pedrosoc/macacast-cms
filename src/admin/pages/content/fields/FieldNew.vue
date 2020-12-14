@@ -1,37 +1,37 @@
 <template>
   <div class="container is-widescreen">
 
-    <h3 class="is-size-3 has-text-centered">Create content field</h3><br>
+    <h3 class="is-size-3 has-text-centered">Criar campo de conteúdo</h3><br>
     <div class="box">
       <div class="columns">
         <div class="column is-one-third">
           <div class="field">
-            <label class="label">Field name</label>
+            <label class="label">Nome do campo</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Field name" v-model="fieldName">
+              <input class="input" type="text" placeholder="Nome do campo" v-model="fieldName">
             </div>
           </div>
           <div class="field">
-            <label class="label">Field type</label>
+            <label class="label">Tipo do campo</label>
             <div class="control">
               <dropdown :options="fieldTypes" :selectedElement="fieldType" />
             </div>
           </div>
           <div class="field">
-            <label class="label">Multi value allowed</label>
-            <div class="control">
+            <div class="control inline">
+              <label class="label">Permitir multi-seleção</label>
               <checkbox v-model="multiValue" />
             </div>
-            <label class="label">Listable</label>
-            <div class="control">
+            <div class="control inline">
+              <label class="label">Listar campo</label>
               <checkbox v-model="listable" />
             </div>
           </div>
         </div>
       </div>
       <div class="buttons">
-        <button type="submit" class="button is-success" :disabled="fieldName === '' || fieldType.id === ''" @click="add()">Add field</button>
-        <router-link to="/admin/content" class="button is-danger">Cancel</router-link>
+        <button type="submit" class="button is-info" :disabled="fieldName === '' || fieldType.id === ''" @click="add()">Adicionar Campo</button>
+        <router-link to="/admin/content" class="button is-danger">Cancelar</router-link>
       </div>
     </div>
   </div>
@@ -54,7 +54,7 @@ export default {
       fieldName: '',
       fieldType: {
         id: '',
-        label: 'Field type'
+        label: 'Tipo do campo'
       },
       multiValue: false,
       listable: false,
@@ -142,4 +142,13 @@ export default {
 </script>
 
 <style>
+
+.control.inline {
+    display: flex;
+}
+
+.control.inline input {
+    margin: 7px 0 0 10px;
+}
+
 </style>

@@ -15,19 +15,14 @@
         </div>
       <!-- The admin page content -->
       <div class="admin-wrapper">
-        <section class="hero is-light is-medium is-bold" v-if="$route.name === 'Admin'">
+        <section class="hero is-medium" v-if="$route.name === 'Admin'">
           <div class="hero-body ">
             <div class="container has-text-centered">
               <div class="titleAdmin">
                 <h1 class="title">
-                  Welcome to Tamiat CMS
+                 Bem-vindo ao Macacast Admin
                 </h1>
               </div>
-              <h2 class="subtitle">
-                <a href="https://github.com/tamiat/tamiat" target="_blank">
-                  <span style="font-size: 25px;font-weight: bold">GitHub</span>
-                </a>
-              </h2>
               <router-link to="/">
                 <!-- <img src="/static/img/logo.png" alt="Tamiat CMS logo"> -->
                 <div>

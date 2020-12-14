@@ -157,7 +157,7 @@ export default {
         })
           .then((res) => {
             let template = this.form.template
-            this.showNotification('success', 'Route added successfully')
+            this.showNotification('success', 'Rota adicionada com sucesso.')
             this.$router.addRoutes([{
               path: this.form.path,
               component: () => import(`@/app/templates/${template}.vue`)
@@ -168,7 +168,7 @@ export default {
             console.log(err)
           })
       } else {
-        this.showNotification('danger', 'A route with the same path already exists')
+        this.showNotification('danger', 'Rota com o mesmo caminho de outra rota existente.')
       }
     },
     editRoute (route) {
@@ -188,7 +188,7 @@ export default {
       })
         .then(() => {
           let template = this.form.template
-          this.showNotification('success', 'Route Updated successfully')
+          this.showNotification('success', 'Rota atualizada com sucesso.')
           this.$router.addRoutes([{
             path: this.form.path,
             component: () => import(`@/app/templates/${template}.vue`)
@@ -199,7 +199,7 @@ export default {
     deleteRoute (key) {
       this.$firebaseRefs.routes.child(key).remove()
         .then(() => {
-          this.showNotification('success', 'Route deleted successfully')
+          this.showNotification('success', 'Rota deletada com sucesso.')
         })
     },
     clear () {
