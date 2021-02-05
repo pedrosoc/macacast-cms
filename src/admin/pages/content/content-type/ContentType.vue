@@ -1,6 +1,6 @@
 <template>
   <div class="contentType">
-    <div class="container is-widescreen">
+    <div class="is-widescreen">
 
       <!-- View for edit/add new field -->
       <router-view :edit-field="editField" :add-field="addField"></router-view>
@@ -13,7 +13,7 @@
       </transition>
       <div class="">
           <div class="column">
-            <h2>Edite uma seção de conteúdo</h2>
+            <h2>Edite uma categoria de conteúdo</h2>
             <div class="box" v-if="contentsLoaded">
                 <div class="dropdown" :class="{'is-active': dropdownActive}" @click="toggleDropdown">
                 <div class="dropdown-trigger">
@@ -37,16 +37,26 @@
             </div>
         </div>
         <div class="column">
-          <h2 v-if="selectedContent">Editando seção</h2>
-          <h2 v-else>Criar nova seção de conteúdo</h2>
+          <h2 v-if="selectedContent">Editando categoria</h2>
+          <h2 v-else>Criar nova categoria de conteúdo</h2>
           <div class="box">
             <div class="columns">
-              <div class="column">
+              <div class="column column-left">
+                <div v-if="selectedContent" class="field">
+                  <label class="label">Id: {{selectedContent[".key"]}}</label>
+                </div>
                 <div class="field">
-                  <label class="label">Nome da seção</label>
+                  <label class="label">Nome da categoria</label>
                   <div class="control">
                     <input v-if="!selectedContent" class="input" type="text" placeholder="e.g. Podcasts" v-model="name">
                     <input v-else class="input" type="text" placeholder="e.g. Podcasts" v-model="selectedContent.name">
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Descrição (max. 180 char)</label>
+                  <div class="control">
+                    <input v-if="!selectedContent" class="input" type="text" maxlength="180" placeholder="e.g. Noticias sobre a Ponte Preta e..." v-model="description">
+                    <input v-else class="input" type="text" maxlength="180" placeholder="e.g. Noticias sobre a Ponte Preta e..." v-model="selectedContent.description">
                   </div>
                 </div>
                 <div class="field">
@@ -320,7 +330,8 @@ export default {
         return Object.assign({
           name: field.name,
           type: field.type,
-          multiValue: field.multiValue
+          multiValue: field.multiValue,
+          bdName: field.bdName,
         }, field.listable ? { listable: true } : null)
       })
 
@@ -329,6 +340,7 @@ export default {
         contentFields: this.contentFields,
         slug: this.slug,
         baseRoute: this.baseRoute,
+        description: this.description,
         path: `/admin/content/${path}`,
         icon: 'fa-file-text',
         fields: selectedFields
@@ -371,6 +383,7 @@ export default {
       }
       this.slug = ''
       this.baseRoute = ''
+      this.description = ''
       this.selectedContent = null
       for (var fieldKey in this.fields) {
         this.fields[fieldKey].checked = false
@@ -443,6 +456,7 @@ export default {
       this.selectedContentType = option
       this.selectedContent = this.contents.filter(content => {
         if (content.name === option.label) {
+            console.log(content)
           return content
         }
       })[0]
@@ -481,6 +495,14 @@ export default {
 
 <style lang="scss" scoped>
 .contentType {
+  .column {
+      padding: 0;
+  }
+
+  .column-left {
+      padding-right: 30px;
+  }
+
   .nav-preview {
     padding-left: 15px;
   }

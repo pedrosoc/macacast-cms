@@ -10,7 +10,7 @@ html,
 body,
 #admin {
   font-family: sans-serif;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
   height: 100%;
   width: 100%;
   margin: 0px;

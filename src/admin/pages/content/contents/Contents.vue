@@ -1,9 +1,9 @@
 <template>
-  <div class="container posts" id="posts" v-if="loaded">
+  <div class="posts" id="posts" v-if="loaded">
 
     <!-- Page title -->
     <div class="content-heading is-flex">
-      <h3 class="is-size-3">{{ content.name }}</h3>
+      <h2 style="margin-right: 1em">{{ content.name }}</h2>
       <router-link :to="'/admin/content/' + $route.params.key + '/new'" class="button is-info">Adicionar novo</router-link>
     </div>
 
@@ -88,17 +88,17 @@
                 <td class="post-title-cell" v-for="(field, fieldKey) in contentFields" :key="fieldKey" v-if="findField(field.name)">
                 <!-- formatting how each field type is displayed -->
                 <figure class="websiteLogo" v-if="findFieldType(field.name) === 'image'">
-                    <img :src="filteredContent[index][field.name]" alt="logo" style="max-height: 80px;">
+                    <img :src="filteredContent[index][field.bdName]" alt="logo" style="max-height: 80px;">
                 </figure>
-                <span v-else-if="findFieldType(field.name) === 'textbox' ">{{ filteredContent[index][field.name] }}</span>
-                <span v-else-if="findFieldType(field.name) === 'boolean'" class="tag is-info pointer">{{ filteredContent[index][field.name] }}</span>
-                <a v-else-if="findFieldType(field.name) === 'url'" :href="filteredContent[index][field.name].link">{{ filteredContent[index][field.name].name }}</a>
-                <span v-else-if="findFieldType(field.name) === 'tags'" v-for="tag in filteredContent[index][field.name]" class="tag is-info pointer">{{ tag }}</span>
-                <span v-else-if="findFieldType(field.name) === 'select' && field.name !== 'category'" class="tag is-primary" > {{ filteredContent[index][field.name].selected }}</span>
+                <span v-else-if="findFieldType(field.name) === 'textbox' ">{{ filteredContent[index][field.bdName] }}</span>
+                <span v-else-if="findFieldType(field.name) === 'boolean'" class="tag is-info pointer">{{ filteredContent[index][field.bdName] }}</span>
+                <a v-else-if="findFieldType(field.name) === 'url'" :href="filteredContent[index][field.bdName].link">{{ filteredContent[index][field.bdName].name }}</a>
+                <span v-else-if="findFieldType(field.name) === 'tags'" v-for="tag in filteredContent[index][field.bdName]" class="tag is-info pointer">{{ tag }}</span>
+                <span v-else-if="findFieldType(field.name) === 'select' && field.name !== 'category'" class="tag is-primary" > {{ filteredContent[index][field.bdName].selected }}</span>
                 <span v-else-if="findFieldType(field.name) === 'select' && field.name === 'category'" class="tags" >
-                    <span class="tag is-primary" v-for="(option, index) in filteredContent[index][field.name].options" :key="index"> {{option}}</span>
+                    <span class="tag is-primary" v-for="(option, index) in filteredContent[index][field.bdName].options" :key="index"> {{option}}</span>
                 </span>
-                <input v-else-if="findFieldType(field.name) === 'integer'" type="number" :value="filteredContent[index][field.name]" class="input" readonly/>
+                <input v-else-if="findFieldType(field.name) === 'integer'" type="number" :value="filteredContent[index][field.bdName]" class="input" readonly/>
                 <p v-else>{{ field }}</p>
                 </td>
             </tr>
@@ -177,6 +177,7 @@ export default {
   },
   methods: {
     findField (field) {
+      console.log(this.content);
       for (var key in this.content.fields) {
         if (this.content.fields[key].name.toLowerCase() === field.toLowerCase()) {
           if (this.content.fields[key].listable) {

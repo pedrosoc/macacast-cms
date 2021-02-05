@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-widescreen">
+  <div class="is-widescreen">
 
     <h3 class="is-size-3 has-text-centered">Criar campo de conteúdo</h3><br>
     <div class="box">
@@ -9,6 +9,12 @@
             <label class="label">Nome do campo</label>
             <div class="control">
               <input class="input" type="text" placeholder="Nome do campo" v-model="fieldName">
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Nome no banco de dados</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Nome no banco de dados" v-model="fieldBDName">
             </div>
           </div>
           <div class="field">
@@ -30,7 +36,7 @@
         </div>
       </div>
       <div class="buttons">
-        <button type="submit" class="button is-info" :disabled="fieldName === '' || fieldType.id === ''" @click="add()">Adicionar Campo</button>
+        <button type="submit" class="button is-info" :disabled="fieldName === '' || fieldBDName === '' || fieldType.id === ''" @click="add()">Adicionar Campo</button>
         <router-link to="/admin/content" class="button is-danger">Cancelar</router-link>
       </div>
     </div>
@@ -52,6 +58,7 @@ export default {
   data () {
     return {
       fieldName: '',
+      fieldBDName: '',
       fieldType: {
         id: '',
         label: 'Tipo do campo'
@@ -103,6 +110,7 @@ export default {
     add () {
       let f = {
         name: this.fieldName,
+        bdName: this.fieldBDName,
         type: this.fieldType.id,
         multiValue: this.multiValue,
         listable: this.listable
@@ -117,6 +125,7 @@ export default {
       }
       this.addField(f)
       this.fieldName = ''
+      this.fieldBDName = ''
       this.fieldType = {
         id: '',
         label: 'Field type'

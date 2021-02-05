@@ -8,7 +8,7 @@
         <div class="field" v-for="(field, index) in fields" :key="index" v-if="field.type === 'textbox'">
           <label class="label">{{ field.name }}</label>
           <div class="control">
-            <input type="text" class="input" maxlength="25" required :placeholder="field.name" v-model="content[field.name]">
+            <input type="text" class="input" maxlength="255" required :placeholder="field.name" v-model="content[field.bdName]">
           </div>
         </div>
 
@@ -16,13 +16,13 @@
         <div class="field" v-for="(field, index) in fields" :key="index" v-if="field.type === 'textarea'">
           <label class="label">{{ field.name }}</label>
           <div class="control">
-            <textarea class="input" v-model="content[field.name]" :placeholder="field.name" v-text="content[field.name]"></textarea>
+            <textarea class="input" v-model="content[field.bdName]" :placeholder="field.name" v-text="content[field.bdName]"></textarea>
           </div>
         </div>
 
         <!-- Rich text fields - vue-quill-editor plugin -->
         <div v-for="(field, index) in fields" :key="index" v-if="field.type === 'richtextbox'">
-          <quill-editor v-model="content[field.name]" :options="editorOptions">
+          <quill-editor v-model="content[field.bdName]" :options="editorOptions">
           </quill-editor>
           <input type="file" id="getImage" style="display: none;" @change="uploadImage">
         </div>
@@ -34,15 +34,15 @@
           <div class="columns">
             <div class="column">
               <div class="select margin-select">
-                <select v-model="content[field.name].selected">
-                  <option v-for="(selectOption, selectIndex) in content[field.name].options" :key="selectIndex">{{ selectOption }}</option>
+                <select v-model="content[field.bdName].selected">
+                  <option v-for="(selectOption, selectIndex) in content[field.bdName].options" :key="selectIndex">{{ selectOption }}</option>
                 </select>
               </div>
             </div>
             <div class="column">
               <!--area to delete options-->
-              <div v-for="(option, optionKey) in content[field.name].options" :key="optionKey" >
-                <span @click="removeTag(optionKey, field.name, true)" class="tag is-info pointer">{{option}}
+              <div v-for="(option, optionKey) in content[field.bdName].options" :key="optionKey" >
+                <span @click="removeTag(optionKey, field.bdName, true)" class="tag is-info pointer">{{option}}
                 <button class="delete is-small"></button>
               </span>
               </div>
@@ -50,7 +50,7 @@
           </div>
           <!--area to enter options-->
           <div class="control">
-            <input type="text" class="input" :placeholder="field.name" @blur="styleOptions(field.name)" @keyup.enter="styleOptions(field.name)" v-model="selectOptionsRow" maxlength="25">
+            <input type="text" class="input" :placeholder="field.name" @blur="styleOptions(field.bdName)" @keyup.enter="styleOptions(field.bdName)" v-model="selectOptionsRow" maxlength="255">
           </div>
           <p>Separa as opções por vírgula (Ex: "Suco,Maça,Pêra")</p>
         </div>
@@ -61,7 +61,7 @@
           <label class="label">{{ field.name }}</label>
           <div class="columns">
             <div class="column is-one-third">
-              <input type="number" :placeholder="field.name" class="input" v-model="content[field.name]">
+              <input type="number" :placeholder="field.name" class="input" v-model="content[field.bdName]">
             </div>
           </div>
         </div>
@@ -93,17 +93,17 @@
           <div class="columns">
             <div class="column is-two-fifths">
               <span>Nome</span>
-              <input :placeholder="field.name + ' name'" class="input" v-model="content[field.name].name">
+              <input :placeholder="field.name + ' name'" class="input" v-model="content[field.bdName].name">
             </div>
             <div class="column is-two-fifths">
               <span>Link</span>
-              <input :placeholder="field.name + ' link'" class="input" v-model="content[field.name].link">
+              <input :placeholder="field.name + ' link'" class="input" v-model="content[field.bdName].link">
             </div>
           </div>
           <div class="columns">
             <div class="column">
               <span>Visualização: </span>
-              <a :href="content[field.name].link">{{ content[field.name].name }}</a>
+              <a :href="content[field.bdName].link">{{ content[field.bdName].name }}</a>
             </div>
           </div>
         </div>
@@ -118,10 +118,10 @@
           <label class="label">{{ field.name }}</label>
           <div class="control">
             <div class="tags tagscontainer">
-              <span @click="removeTag(tagKey, field.name)" v-for="(tag, tagKey) in content[field.name]" :key="tagKey" class="tag is-info pointer">{{tag}}
+              <span @click="removeTag(tagKey, field.bdName)" v-for="(tag, tagKey) in content[field.bdName]" :key="tagKey" class="tag is-info pointer">{{tag}}
                 <button class="delete is-small"></button>
               </span>
-              <input :placeholder="field.name" @blur="styleTags(field.name)" @keyup.enter="styleTags(field.name)" type="text" class="input" maxlength="25" v-model="inputData">
+              <input :placeholder="field.name" @blur="styleTags(field.bdName)" @keyup.enter="styleTags(field.bdName)" type="text" class="input" maxlength="255" v-model="inputData">
             </div>
             <p>Separa as opções por vírgula (Ex: "Suco,Maça,Pêra")</p>
           </div>
@@ -131,7 +131,7 @@
         <div class="field" v-for="(field, index) in fields" :key="index" v-if="field.type === 'image'">
           <label class="label">{{ field.name }}</label>
           <div class="control">
-            <img :src="content[field.name]">
+            <img :src="content[field.bdName]">
             <div class="file">
               <label class="file-label">
                 <input @change="uploadFeaturedImage($event, field.name)" class="file-input" type="file" name="resume">

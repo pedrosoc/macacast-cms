@@ -16,10 +16,10 @@
             <input
               type="text"
               class="input"
-              maxlength="25"
+              maxlength="255"
               required
               :placeholder="field.name"
-              v-model="newContent[field.name]"
+              v-model="newContent[field.bdName]"
             >
           </div>
         </div>
@@ -35,16 +35,16 @@
           <div class="control">
             <textarea
               class="input"
-              v-model="newContent[field.name]"
+              v-model="newContent[field.bdName]"
               :placeholder="field.name"
-              v-text="newContent[field.name]"
+              v-text="newContent[field.bdName]"
             ></textarea>
           </div>
         </div>
 
         <!-- Rich text fields - vue-quill-editor plugin -->
         <div v-for="(field, index) in fields" :key="index" v-if="field.type === 'richtextbox'">
-          <quill-editor v-model="newContent[field.name]" :options="editorOptions"></quill-editor>
+          <quill-editor v-model="newContent[field.bdName]" :options="editorOptions"></quill-editor>
           <input type="file" id="getImage" style="display: none;" @change="uploadImage">
         </div>
 
@@ -71,7 +71,7 @@
             <div class="column">
               <!--area to delete options-->
               <div v-for="(option, optionKey) in select.options" :key="optionKey">
-                <span @click="removeTag(optionKey, field.name, true)" class="tag is-info pointer">
+                <span @click="removeTag(optionKey, field.bdName, true)" class="tag is-info pointer">
                   {{option}}
                   <button class="delete is-small"></button>
                 </span>
@@ -84,10 +84,10 @@
               type="text"
               class="input"
               :placeholder="field.name"
-              @blur="styleOptions(field.name)"
-              @keyup.enter="styleOptions(field.name)"
+              @blur="styleOptions(field.bdName)"
+              @keyup.enter="styleOptions(field.bdName)"
               v-model="selectOptionsRow"
-              maxlength="25"
+              maxlength="255"
             >
           </div>
           <p>Separate options with commas</p>
@@ -108,7 +108,7 @@
                 type="number" 
                 :placeholder="field.name" 
                 class="input"
-                v-model="newContent[field.name]"
+                v-model="newContent[field.bdName]"
               >
             </div>
           </div>
@@ -130,8 +130,8 @@
                 :placeholder="field.name + ' name'"
                 class="input"
                 v-model="booleanName"
-                @blur="createNewBoolContent(field.name)"
-                @keyup.enter="createNewBoolContent(field.name)"
+                @blur="createNewBoolContent(field.bdName)"
+                @keyup.enter="createNewBoolContent(field.bdName)"
               >
             </div>
           </div>
@@ -161,8 +161,8 @@
                 :placeholder="field.name + ' name'"
                 class="input"
                 v-model="urlContentData.name"
-                @blur="createUrlnewContent(field.name)"
-                @keyup.enter="createUrlnewContent(field.name)"
+                @blur="createUrlnewContent(field.bdName)"
+                @keyup.enter="createUrlnewContent(field.bdName)"
               >
             </div>
             <div class="column is-two-fifths">
@@ -171,8 +171,8 @@
                 :placeholder="field.name + ' link'"
                 class="input"
                 v-model="urlContentData.link"
-                @blur="createUrlnewContent(field.name)"
-                @keyup.enter="createUrlnewContent(field.name)"
+                @blur="createUrlnewContent(field.bdName)"
+                @keyup.enter="createUrlnewContent(field.bdName)"
               >
             </div>
           </div>
@@ -200,7 +200,7 @@
             <div class="tags tagscontainer">
               <span
                 @click="removeTag(tagKey, field.name)"
-                v-for="(tag, tagKey) in newContent[field.name]"
+                v-for="(tag, tagKey) in newContent[field.bdName]"
                 :key="tagKey"
                 class="tag is-info pointer"
               >
@@ -209,11 +209,11 @@
               </span>
               <input
                 :placeholder="field.name"
-                @blur="styleTags(field.name)"
-                @keyup.enter="styleTags(field.name)"
+                @blur="styleTags(field.bdName)"
+                @keyup.enter="styleTags(field.bdName)"
                 type="text"
                 class="input"
-                maxlength="25"
+                maxlength="255"
                 v-model="inputData"
               >
             </div>
@@ -234,7 +234,7 @@
             <div class="file">
               <label class="file-label">
                 <input
-                  @change="uploadFeaturedImage($event, field.name)"
+                  @change="uploadFeaturedImage($event, field.bdName)"
                   class="file-input"
                   type="file"
                   name="resume"

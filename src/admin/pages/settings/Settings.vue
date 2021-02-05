@@ -1,5 +1,5 @@
 <template>
-  <div class="container settings" id="settings">
+  <div class="settings" id="settings">
 
     <!-- notification -->
     <transition mode="out-in" name="fade">

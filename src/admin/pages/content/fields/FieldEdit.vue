@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-widescreen">
+  <div class="is-widescreen">
 
     <h3 class="is-size-3 has-text-centered">Edit content field</h3><br>
     <div class="box">

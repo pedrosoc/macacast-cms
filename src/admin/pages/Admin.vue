@@ -5,31 +5,26 @@
     <!-- The admin header-->
     <header class="has-sub">
       <div class="head-container">
-        <navbar></navbar>
+          <sidebar></sidebar>
+          <navbar></navbar>
       </div>
     </header>
     <!--The admin main page for a sidebar and content-->
-    <div class="columns is-gapless ia-contentarea">
-      <div>
-          <sidebar></sidebar>
-        </div>
+    <div class="container">
       <!-- The admin page content -->
       <div class="admin-wrapper">
         <section class="hero is-medium" v-if="$route.name === 'Admin'">
           <div class="hero-body ">
             <div class="container has-text-centered">
+              <router-link to="/">
+                <img src="/static/img/macacast-logo-160.png" alt="Tamiat CMS logo">
+              </router-link>
               <div class="titleAdmin">
                 <h1 class="title">
-                 Bem-vindo ao Macacast Admin
+                 Bem-vindo ao Macacast CMS
                 </h1>
               </div>
-              <router-link to="/">
-                <!-- <img src="/static/img/logo.png" alt="Tamiat CMS logo"> -->
-                <div>
-                  <object type="image/svg+xml" data="static/img/tamiat-logo-icon-color.svg" style="pointer-events: none; height: 7rem"></object>
-                </div>
-              </router-link>
-              <p>Version v0.3.0</p>
+              <p>Version v0.1</p>
             </div>
           </div>
         </section>
