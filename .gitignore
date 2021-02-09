@@ -70,8 +70,3 @@ typings/
 
 # next.js build output
 .next
-
-# firebaseConfig
-src/admin/firebase_config/config.js
-
-database.rules.json
