@@ -1,5 +1,17 @@
 <template>
   <div class="box">
+    <div v-if="content.state === 'saved'">
+        <b>Teste sua publicação no site através desse link:</b>
+        <br />
+        <a :href="'https://macacast.com.br' + this.categoryRoute + '/' + this.content['.key'] + '/preview'" target="_blank">{{ 'https://macacast.com.br' + this.categoryRoute + '/' + this.content['.key'] + '/preview' }}</a> 
+        <br /><br />
+    </div>
+    <div v-if="content.state !== 'saved'">
+        <b>Veja essa publicação no site através desse link:</b>
+        <br />
+        <a :href="'https://macacast.com.br' + this.categoryRoute + '/' + this.content['.key']" target="_blank">{{ 'https://macacast.com.br' + this.categoryRoute + '/' + this.content['.key'] }}</a> 
+        <br /><br />
+    </div>
     <div class="columns">
 
       <div class="column is-two-thirds">
@@ -196,7 +208,7 @@ export default {
   firebase: {
     media: mediaRef
   },
-  props: ['contents', 'update-content', 'fields'],
+  props: ['contents', 'update-content', 'fields', 'categoryRoute'],
   mixins: [imageLoader, notifier],
   methods: {
     update (publish) {

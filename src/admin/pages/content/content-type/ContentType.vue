@@ -456,7 +456,6 @@ export default {
       this.selectedContentType = option
       this.selectedContent = this.contents.filter(content => {
         if (content.name === option.label) {
-            console.log(content)
           return content
         }
       })[0]

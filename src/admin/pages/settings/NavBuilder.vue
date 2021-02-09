@@ -8,15 +8,21 @@
         <!-- link form -->
         <div class="column">
           <div class="field">
+            <label class="label">ID do conteúdo</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="ID (ex: 12345abcde)" v-model="id">
+            </div>
+          </div>
+          <div class="field">
             <label class="label">Nome</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Nome (ex: Posts)" v-model="name">
+              <input class="input" type="text" placeholder="Nome (ex: Podcasts)" v-model="name">
             </div>
           </div>
           <div class="field">
             <label class="label">Caminho</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Caminho (ex: /admin/posts)" v-model="path">
+              <input class="input" type="text" placeholder="Caminho (ex: /podcasts)" v-model="route">
             </div>
           </div>
           <div class="field is-grouped">
@@ -43,20 +49,19 @@
           <p class="is-size-4">Menu</p>
           <ul v-for="(item, index) in menu" :key="index" class="nav-preview">
             <li>
-              {{item.name}}: {{item.path}}
+              {{item.name}}: {{item.route}} (ID do conteúdo: {{item.id}})
 
               <span class="link-actions">
                 <span class="has-text-danger fa fa-trash" @click="removeLink(item)"></span>
                 <span v-if="index !== 0" class="has-text-success fa fa-arrow-up" @click="moveLinkUp(item, menu[index - 1])"></span>
                 <span v-if="index !== menu.length - 1" class="fa fa-arrow-down" @click="moveLinkDown(item, menu[index + 1])"></span>
                 <span class="has-text-info fa fa-edit" @click="editLink(item)"></span>
-                <span class="has-text-primary fa fa-plus" @click="addSubLink(item)"></span>
               </span>
 
               <!-- render children links -->
               <ul v-if="item.children" class="sub-nav-preview">
                 <li v-for="(child, key) in item.children" :key="key">
-                  {{child.name}}: {{child.path}}
+                  {{child.name}}: {{child.route}}
 
                   <span class="sub-link-actions">
                     <span class="has-text-danger fa fa-trash" @click="removeSubLink(key, item)"></span>
@@ -82,15 +87,16 @@ export default {
   data () {
     return {
       key: '',
-      link: '', // {'.key', name, path}
+      link: '', // {'.key', name, route}
+      id: '',
       name: '',
-      path: '',
+      route: '',
       action: 'new'
     }
   },
   computed: {
     isAbsolute () {
-      return this.path.startsWith('http')
+      return this.route.startsWith('http')
     }
   },
   firebase: {
@@ -104,26 +110,29 @@ export default {
   },
   methods: {
     addLink () {
-      if (this.name && this.path) {
+      if (this.name && this.route) {
         this.$firebaseRefs.menu.push({
+          id: this.id,
           name: this.name,
-          path: this.path,
+          route: this.route,
           isAbsolute: this.isAbsolute
         })
       }
       this.clear()
     },
     editLink (link) {
+      this.id = link.id
       this.name = link.name
-      this.path = link.path
+      this.route = link.route
       this.action = 'edit'
       this.key = link['.key']
       this.link = Object.assign({}, link)
     },
     updateLink () {
       delete this.link['.key']
+      this.link.id = this.id
       this.link.name = this.name
-      this.link.path = this.path
+      this.link.route = this.route
       this.link.isAbsolute = this.isAbsolute
 
       this.$firebaseRefs.menu.child(this.key).set(this.link)
@@ -133,8 +142,9 @@ export default {
       this.$firebaseRefs.menu.child(item['.key']).remove()
     },
     clear () {
+      this.id = ''
       this.name = ''
-      this.path = ''
+      this.route = ''
       this.action = 'new'
     },
     moveLinkUp (item, previousItem) {
@@ -163,8 +173,9 @@ export default {
     },
     appendSubLink () {
       this.$firebaseRefs.menu.child(this.key).child('children').push({
+        id: this.id,
         name: this.name,
-        path: this.path,
+        route: this.route,
         isAbsolute: this.isAbsolute
       })
       this.clear()
@@ -224,16 +235,18 @@ export default {
       this.$firebaseRefs.menu.child(parent['.key']).child('children').child(key).remove()
     },
     editSubLink (key, parent) {
+      this.id = parent.children[key].id
       this.name = parent.children[key].name
-      this.path = parent.children[key].path
+      this.route = parent.children[key].route
       this.action = 'edit-sub'
       this.key = key
       this.link = Object.assign({}, parent)
     },
     updateSubLink () {
       this.$firebaseRefs.menu.child(this.link['.key']).child('children').child(this.key).update({
+        id: this.id,
         name: this.name,
-        path: this.path,
+        route: this.route,
         isAbsolute: this.isAbsolute
       })
     }

@@ -20,7 +20,7 @@
     </transition>
 
     <!-- New content form loaded via router -->
-    <router-view :add-content="addContent" :fields="content.fields" :update-content="updateContent" :contents="contentData" :key="$route.name + ($route.params.key || '')"></router-view>
+    <router-view :add-content="addContent" :fields="content.fields" :categoryRoute="content.baseRoute" :update-content="updateContent" :contents="contentData" :key="$route.name + ($route.params.key || '')"></router-view>
 
     <div v-if="!$route.path.includes('new') && !$route.path.includes('edit')">
         <!-- Search contents -->
@@ -45,7 +45,7 @@
             Publicados<span class="stateCnt">({{ publishedContent.length}})</span>
             </a>|
             <a class="state" @click="selectedState = 'saved'" :class="{ 'activeState': selectedState === 'saved' }">
-            Salvos<span class="stateCnt">({{ savedContent.length}})</span>
+            Rascunhos<span class="stateCnt">({{ savedContent.length}})</span>
             </a>
         </div>
         <!-- Dropdown filters -->
@@ -63,13 +63,16 @@
             <thead>
             <tr>
                 <th>
-                Criado em
-                <span class="icon">
-                    <i :class="{ 'fa fa-sort-down': !sortOptions.created.reverse, 'fa fa-sort-up': sortOptions.created.reverse }"></i>
-                </span>
+                    Criado em
+                    <span class="icon">
+                        <i :class="{ 'fa fa-sort-down': !sortOptions.created.reverse, 'fa fa-sort-up': sortOptions.created.reverse }"></i>
+                    </span>
+                </th>
+                <th>
+                    Status
                 </th>
                 <th v-for="(field, fieldKey) in content.fields" :key="fieldKey" v-if="findField(field.name)">
-                {{ field.name }}
+                    {{ field.name }}
                 </th>
             </tr>
             </thead>
@@ -84,6 +87,9 @@
                     </router-link>
                     <span @click="deleteContent(contentInstance)" class="has-text-danger">Delete</span>
                 </div>
+                </td>
+                <td>
+                    {{ contentInstance.state === 'saved' ? 'Rascunho' : 'Publicado' }}
                 </td>
                 <td class="post-title-cell" v-for="(field, fieldKey) in contentFields" :key="fieldKey" v-if="findField(field.name)">
                 <!-- formatting how each field type is displayed -->
@@ -177,7 +183,6 @@ export default {
   },
   methods: {
     findField (field) {
-      console.log(this.content);
       for (var key in this.content.fields) {
         if (this.content.fields[key].name.toLowerCase() === field.toLowerCase()) {
           if (this.content.fields[key].listable) {
@@ -196,7 +201,7 @@ export default {
     },
     formatDate (epoch) {  
       if (!epoch) return // if no time return nothing            
-      return moment(epoch).format('MM/DD/YY | hh:mm')
+      return moment(epoch).format('MM/DD/YY | HH:mm')
     },
     addContent (content) {
       if (this.content.slug) {
