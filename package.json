@@ -4,6 +4,9 @@
   "description": "Tamiat CMS",
   "author": "Mahmoud_Nouman <mahmoud@nouman.com>",
   "private": true,
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",

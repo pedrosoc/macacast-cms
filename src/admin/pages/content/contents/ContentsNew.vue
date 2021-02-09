@@ -335,7 +335,7 @@ export default {
                 e => e.path === snapshot.ref.fullPath
               )
             )
-              return; // this prevents duplicate entries in the media object
+              return // this prevents duplicate entries in the media object
             this.$firebaseRefs.media.push({
               src: downloadURL,
               path: snapshot.ref.fullPath,
