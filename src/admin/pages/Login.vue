@@ -9,9 +9,9 @@
         </div>
 
         <!-- tamiat CMS logo -->
-        <div class="columns is-flex is-centered is-mobile">
-          <figure class="column is-half">
-            <router-link to="/"><img :src="`${baseUrl}static/img/logo.png`" alt="Tamiat logo"></router-link>
+        <div class="columns is-flex login-container is-centered is-mobile">
+          <figure class="column columns is-centered">
+            <router-link class="login-title" to="/">MACACAST ADMIN</router-link>
           </figure>
         </div>
 
@@ -90,5 +90,17 @@ export default {
 .login p {
   margin-top: 1em;
   font-size: 0.8em;
+}
+
+.login-container {
+    display: flex;
+}
+
+.login-title {
+    text-align: center;
+    font-size: 30px;
+    color: #000;
+    font-weight: bold;
+    margin: 30px 0;
 }
 </style>
