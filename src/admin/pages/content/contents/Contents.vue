@@ -23,10 +23,10 @@
     <router-view :add-content="addContent" :fields="content.fields" :categoryRoute="content.baseRoute" :update-content="updateContent" :contents="contentData" :key="$route.name + ($route.params.key || '')"></router-view>
 
     <div v-if="!$route.path.includes('new') && !$route.path.includes('edit')">
-        <!-- Search contents -->
+        <!-- Search contents
         <div class="field is-grouped">
         <p class="control is-expanded">
-            <input class="input" type="text" :placeholder="'Procure em ' + content.name + '...'"> <!--  v-model="searchPost" -->
+            <input class="input" type="text" :placeholder="'Procure em ' + content.name + '...'"> <!--  v-model="searchPost"
         </p>
         <p class="control">
             <a class="button is-info">
@@ -34,6 +34,7 @@
             </a>
         </p>
         </div>
+        -->
 
         <!-- States -->
         <div class="filters">
@@ -52,9 +53,9 @@
         <div>
             <!-- Categories
             <dropdown :options="postsList" :selectedElement="params.category" />-->
-            <!-- Bulk actions -->
+            <!-- Bulk actions 
             <dropdown :options="bulkActions" :selectedElement="params.bulkAction" @selectBulkActions="selectBulkActions()" @bulkDelete="bulkDelete()" />
-        </div>
+        --></div>
         </div>
 
         <!-- Contents list -->
@@ -64,9 +65,9 @@
             <tr>
                 <th>
                     Criado em
-                    <span class="icon">
+                     <!-- <span class="icon">
                         <i :class="{ 'fa fa-sort-down': !sortOptions.created.reverse, 'fa fa-sort-up': sortOptions.created.reverse }"></i>
-                    </span>
+                    </span> -->
                 </th>
                 <th>
                     Status
@@ -74,12 +75,15 @@
                 <th v-for="(field, fieldKey) in content.fields" :key="fieldKey" v-if="findField(field.name)">
                     {{ field.name }}
                 </th>
+                <th>
+                    Link
+                </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(contentInstance, index) in filteredContent" :key="index">
                 <td class="post-title-cell">
-                <checkbox v-model="contentInstance.selected" />
+                <!-- <checkbox v-model="contentInstance.selected" />-->
                 {{ formatDate(contentInstance.created) }}
                 <div class="actions">
                     <router-link :to="'/admin/content/' + $route.params.key + '/edit/' + contentInstance['.key']">
@@ -106,6 +110,9 @@
                 </span>
                 <input v-else-if="findFieldType(field.name) === 'integer'" type="number" :value="filteredContent[index][field.bdName]" class="input" readonly/>
                 <p v-else>{{ field }}</p>
+                </td>
+                <td>
+                    <a target="_blank" :href="'https://macacast.com.br' + content['baseRoute'] + '/' + contentInstance['.key'] + (contentInstance.state === 'saved' ? '/preview' : '')">Visualizar</a>
                 </td>
             </tr>
             </tbody>
@@ -148,6 +155,7 @@ export default {
       this.content = Object.assign(
         {},
         (this.contents.filter((content) => {
+            console.log(this);
           return (content['.key'] === this.$route.params.key)
         }))[0]
       )
@@ -203,7 +211,7 @@ export default {
       if (!epoch) return // if no time return nothing            
       return moment(epoch).format('MM/DD/YY | HH:mm')
     },
-    addContent (content) {
+    addContent (content, callbackFunc) {
       if (this.content.slug) {
         content.slug = this.slugify(content[this.content.slug])
       }
@@ -211,6 +219,7 @@ export default {
       this.$firebaseRefs.contents.child(this.$route.params.key + '/data')
         .push(content)
         .then(() => {
+          callbackFunc && callbackFunc();
           this.showNotification('success', 'Conteúdo adicionado com sucesso.')
         })
     },
@@ -236,7 +245,7 @@ export default {
           this.selContent = ''
         })
     },
-    updateContent (content) {
+    updateContent (content, callbackFunc) {
       // create a copy of the item
       let tempCon = { ...content }
       if (this.content.slug) {
@@ -252,6 +261,8 @@ export default {
           if (content.state === 'published') {
             this.showNotification('success', 'Conteúdo atualizado e publicado com sucesso.')
           }
+        }).then(() => {
+            callbackFunc && callbackFunc();
         })
     },
     slugify (str) {

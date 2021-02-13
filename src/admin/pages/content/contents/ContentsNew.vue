@@ -243,7 +243,7 @@
                   <span class="file-icon">
                     <i class="fa fa-upload"></i>
                   </span>
-                  <span class="file-label">Choose a file…</span>
+                  <span class="file-label">Escolha uma imagem</span>
                 </span>
               </label>
             </div>
@@ -311,12 +311,15 @@ export default {
   },
   methods: {
     add(state) {
+      this.isLoading = true;
       this.newContent.created = Date.now()
       this.newContent.selected = false
       this.newContent.state = state
 
-      this.addContent(this.newContent)
-      this.$router.push({ path: "/admin/content/" + this.$route.params.key })
+      this.addContent(this.newContent, () => { 
+        this.isLoading = false;
+        this.$router.push({ path: "/admin/content/" + this.$route.params.key })
+      })
     },
     uploadFeaturedImage(e, fieldName) {
       this.isLoading = true;

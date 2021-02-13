@@ -1,5 +1,8 @@
 <template>
   <div class="box">
+    <loading color="#3b9169" :active.sync="isLoading" :can-cancel="false" :is-full-page="fullPage"></loading>
+
+
     <div v-if="content.state === 'saved'">
         <b>Teste sua publicação no site através desse link:</b>
         <br />
@@ -143,10 +146,10 @@
         <div class="field" v-for="(field, index) in fields" :key="index" v-if="field.type === 'image'">
           <label class="label">{{ field.name }}</label>
           <div class="control">
-            <img :src="content[field.bdName]">
+            <img v-if="imagePreview || content[field.bdName]" :src="imagePreview || content[field.bdName]">
             <div class="file">
               <label class="file-label">
-                <input @change="uploadFeaturedImage($event, field.name)" class="file-input" type="file" name="resume">
+                <input @change="uploadFeaturedImage($event, field.bdName)" class="file-input" type="file" name="resume">
                 <span class="file-cta">
                   <span class="file-icon">
                     <i class="fa fa-upload"></i>
@@ -183,22 +186,32 @@ import editorOptions from '@/admin/utils/editor-options'
 import imageLoader from '@/admin/mixins/image-loader'
 import notifier from '@/admin/mixins/notifier'
 
+import Loading from "vue-loading-overlay"
+
 export default {
   name: 'content-edit',
+  components: {
+    Loading
+  },
   data () {
     return {
       /* Here we are filtering out the post containing the provided key in the router params
        * we are using Object.assign to copy the post by value not by reference
        * to prevent updating the post when typing */
+      imagePreview: null,
       inputData: '',
       select: {
         selected:'',
         options:[]
       },
       selectOptionsRow: '',
+      isLoading: false,
+      fullPage: true,
       content: Object.assign(
         {},
         (this.contents.filter((c) => {
+          if (c['.key'] === this.$route.params.contentKey)
+            console.log(c);
           return (c['.key'] === this.$route.params.contentKey)
         }))[0]
       ),
@@ -212,18 +225,25 @@ export default {
   mixins: [imageLoader, notifier],
   methods: {
     update (publish) {
+      this.isLoading = true;
       if (publish) {
         this.content.state = 'published'
       }
-      this.updateContent(this.content)
+      this.updateContent(this.content, () => {
+          this.isLoading = false;
+          this.$router.push({ path: "/admin/content/" + this.$route.params.key });
+      })
     },
-    uploadFeaturedImage (e) {
+    uploadFeaturedImage (e, bdName) {
+      this.isLoading = true;
       let file = e.target.files[0]
       let storageRef = firebase.storage().ref('images/' + file.name)
 
       storageRef.put(file).then((snapshot) => {
         snapshot.ref.getDownloadURL().then(downloadURL => {
-          this.content.img = downloadURL
+          this.$set(this, "imagePreview", URL.createObjectURL(file))
+          this.content[bdName] = downloadURL
+          console.log(bdName, this.content[bdName], downloadURL);
           if (Object.values(this.media).find(e => e.path === snapshot.ref.fullPath)) return // this prevents duplicate entries in the media object
           this.$firebaseRefs.media.push({
             src: downloadURL,
@@ -231,7 +251,9 @@ export default {
             name: snapshot.metadata.name
           })
         })
-      })
+      }).then(() => {
+        this.isLoading = false
+      });
     },
     styleTags (fieldName) {
       if (this.inputData !== '') {

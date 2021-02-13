@@ -20,7 +20,7 @@ const contentFilters = {
           label: 'Deletar todos selecionados'
         }
       ],
-      selectedOption: '',
+      selectedOption: 'created',
       searchContent: '',
       selectedState: 'all',
       params: {
@@ -33,27 +33,23 @@ const contentFilters = {
   },
   computed: {
     filteredContent () {
-      return this.contentData
-        .filter(() => {
-          switch (this.selectedOption) {
-            case 'created':
-              return this.sortOptions.created.reverse
-                ? this.contentData.sort(this.sortAcs)
-                : this.contentData.sort(this.sortAcs).reverse()
-            default:
-              return this.contentData
-          }
-        })
-        .filter(content => {
-          switch (this.selectedState) {
-            case 'all':
-              return true
-            case 'saved':
-              return content.state === 'saved'
-            case 'published':
-              return content.state === 'published'
-          }
-        })
+        const filtered = 
+            this.contentData
+                .filter(content => {
+                    switch (this.selectedState) {
+                        case 'all':
+                        return true
+                        case 'saved':
+                        return content.state === 'saved'
+                        case 'published':
+                        return content.state === 'published'
+                    }
+                }).sort(this.sortAcs);
+
+        if (this.sortOptions.created.reverse)
+            return filtered.reverse();
+
+        return filtered;
     },
     contentList () {
       let list
