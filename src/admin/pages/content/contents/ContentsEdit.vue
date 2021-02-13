@@ -225,13 +225,13 @@ export default {
     update (publish) {
       this.isLoading = true;
 
-      if (this.content.state === 'published' && !this.newContent.publicationTime) {
-          this.newContent.publicationTime = Date.now()
+      if (this.content.state === 'published' && !this.content.publicationTime) {
+          this.content.publicationTime = Date.now()
       }
 
       if (publish) {
         this.content.state = 'published'
-        this.newContent.publicationTime = Date.now()
+        this.content.publicationTime = Date.now()
       }
       this.updateContent(this.content, () => {
           this.isLoading = false;
