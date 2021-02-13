@@ -95,7 +95,7 @@
                 <td>
                     {{ contentInstance.state === 'saved' ? 'Rascunho' : 'Publicado' }}
                 </td>
-                <td class="post-title-cell" v-for="(field, fieldKey) in contentFields" :key="fieldKey" v-if="findField(field.name)">
+                <td class="" v-for="(field, fieldKey) in contentFields" :key="fieldKey" v-if="findField(field.name)">
                 <!-- formatting how each field type is displayed -->
                 <figure class="websiteLogo" v-if="findFieldType(field.name) === 'image'">
                     <img :src="filteredContent[index][field.bdName]" alt="logo" style="max-height: 80px;">
