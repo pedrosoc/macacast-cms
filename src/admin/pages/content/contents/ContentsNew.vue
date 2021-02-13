@@ -316,6 +316,9 @@ export default {
       this.newContent.selected = false
       this.newContent.state = state
 
+      if (state === 'published')
+        this.newContent.publicationTime = Date.now()
+
       this.addContent(this.newContent, () => { 
         this.isLoading = false;
         this.$router.push({ path: "/admin/content/" + this.$route.params.key })

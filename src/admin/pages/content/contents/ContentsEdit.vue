@@ -224,8 +224,14 @@ export default {
   methods: {
     update (publish) {
       this.isLoading = true;
+
+      if (this.content.state === 'published' && !this.newContent.publicationTime) {
+          this.newContent.publicationTime = Date.now()
+      }
+
       if (publish) {
         this.content.state = 'published'
+        this.newContent.publicationTime = Date.now()
       }
       this.updateContent(this.content, () => {
           this.isLoading = false;
