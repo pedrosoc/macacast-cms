@@ -95,7 +95,7 @@
                 <td>
                     {{ contentInstance.state === 'saved' ? 'Rascunho' : 'Publicado' }}
                 </td>
-                <td class="" v-for="(field, fieldKey) in contentFields" :key="fieldKey" v-if="findField(field.name)">
+                <td class="max-post-title-cell" v-for="(field, fieldKey) in contentFields" :key="fieldKey" v-if="findField(field.name)">
                 <!-- formatting how each field type is displayed -->
                 <figure class="websiteLogo" v-if="findFieldType(field.name) === 'image'">
                     <img :src="filteredContent[index][field.bdName]" alt="logo" style="max-height: 80px;">
@@ -155,7 +155,6 @@ export default {
       this.content = Object.assign(
         {},
         (this.contents.filter((content) => {
-            console.log(this);
           return (content['.key'] === this.$route.params.key)
         }))[0]
       )
@@ -287,6 +286,9 @@ export default {
 #posts {
   .post-title-cell {
     width: 30%;
+  }
+  .max-post-title-cell {
+    max-width: 300px;
   }
   .post-category-cell {
     width: 20%;

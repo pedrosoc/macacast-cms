@@ -210,8 +210,6 @@ export default {
       content: Object.assign(
         {},
         (this.contents.filter((c) => {
-          if (c['.key'] === this.$route.params.contentKey)
-            console.log(c);
           return (c['.key'] === this.$route.params.contentKey)
         }))[0]
       ),
@@ -243,7 +241,6 @@ export default {
         snapshot.ref.getDownloadURL().then(downloadURL => {
           this.$set(this, "imagePreview", URL.createObjectURL(file))
           this.content[bdName] = downloadURL
-          console.log(bdName, this.content[bdName], downloadURL);
           if (Object.values(this.media).find(e => e.path === snapshot.ref.fullPath)) return // this prevents duplicate entries in the media object
           this.$firebaseRefs.media.push({
             src: downloadURL,
