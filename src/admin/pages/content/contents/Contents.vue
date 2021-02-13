@@ -112,7 +112,7 @@
                 <p v-else>{{ field }}</p>
                 </td>
                 <td>
-                    <a target="_blank" :href="'https://macacast.com.br' + content['baseRoute'] + '/' + contentInstance['.key'] + (contentInstance.state === 'saved' ? '/preview' : '')">Visualizar</a>
+                    <a target="_blank" :href="'https://macacast.com.br' + content['baseRoute'] + '/' + contentInstance['.key'] + (contentInstance.state === 'saved' ? '/preview' : '')">Ver no site</a>
                 </td>
             </tr>
             </tbody>
